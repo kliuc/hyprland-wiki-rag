@@ -1,0 +1,48 @@
+name: Sync `content/` from upstream
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  sync-content:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout hyprland wiki
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Add upstream repo and fetch
+        run: |
+          git remote add upstream https://github.com/hyprwm/hyprland-wiki
+          git fetch upstream
+
+      - name: Create temporary branch to extract upstream content/
+        run: |
+          git checkout -b upstream-temp upstream/main
+          mkdir -p upstream_content
+          cp -r content upstream_content/
+          git checkout main
+
+      - name: Compare and update content if changed
+        run: |
+          rm -rf temp_content
+          cp -r content temp_content || true
+          rm -rf content
+          cp -r upstream_content content
+          if ! diff -qr content temp_content > /dev/null; then
+            echo "Changes detected in content/. Committing..."
+            git add content
+            git commit -m "Update content/ from upstream"
+            git push origin main
+          else
+            echo "No changes in content/. Skipping commit."
+          fi
