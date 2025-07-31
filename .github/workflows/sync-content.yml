@@ -1,48 +1,51 @@
-name: Sync `content/` from upstream
+name: Sync content/ with upstream
 
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: "0 */6 * * *"  # Every 6 hours
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   sync-content:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout hyprland wiki
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
 
-      - name: Set up Git
+      - name: Configure Git
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "actions@github.com"
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
 
-      - name: Add upstream repo and fetch
+      - name: Add upstream and fetch
         run: |
           git remote add upstream https://github.com/hyprwm/hyprland-wiki
           git fetch upstream
 
-      - name: Create temporary branch to extract upstream content/
+      - name: Extract upstream content/
         run: |
-          git checkout -b upstream-temp upstream/main
-          mkdir -p upstream_content
-          cp -r content upstream_content/
-          git checkout main
+          rm -rf upstream_content
+          git checkout upstream/main -- content
+          mv content upstream_content
 
-      - name: Compare and update content if changed
+      - name: Compare content/ with upstream_content/
+        id: check_diff
         run: |
-          rm -rf temp_content
-          cp -r content temp_content || true
+          mkdir -p content
+          diff -qr content upstream_content || echo "changes_detected=true" >> $GITHUB_OUTPUT
+
+      - name: Replace local content/ with upstream version
+        if: steps.check_diff.outputs.changes_detected == 'true'
+        run: |
           rm -rf content
-          cp -r upstream_content content
-          if ! diff -qr content temp_content > /dev/null; then
-            echo "Changes detected in content/. Committing..."
-            git add content
-            git commit -m "Update content/ from upstream"
-            git push origin main
-          else
-            echo "No changes in content/. Skipping commit."
-          fi
+          mv upstream_content content
+
+      - name: Commit and push changed files
+        if: steps.check_diff.outputs.changes_detected == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v6
+        with:
+          commit_message: "Sync content/ with upstream"
+          file_pattern: 'content/*'
