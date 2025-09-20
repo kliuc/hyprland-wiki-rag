@@ -305,7 +305,7 @@ _Subcategory `input:virtualkeyboard:`_
 
 | name | description | type | default |
 | --- | --- | --- | --- |
-| share_states | Unify key down states and modifier states with other keyboards. | bool | false |
+| share_states | Unify key down states and modifier states with other keyboards. 0 -> no, 1 -> yes, 2 -> yes unless IME client | int | 2 |
 | release_pressed_on_close | Release all pressed keys by virtual keyboard on close. | bool | false |
 
 #### Tablet
@@ -424,6 +424,7 @@ _Subcategory `misc:`_
 |---|---|---|---|
 | disable_hyprland_logo | disables the random Hyprland logo / anime girl background. :( | bool | false |
 | disable_splash_rendering | disables the Hyprland splash rendering. (requires a monitor reload to take effect) | bool | false |
+| disable_scale_notification | disables notification popup when a monitor fails to set a suitable scale | bool | false |
 | col.splash | Changes the color of the splash text (requires a monitor reload to take effect). | color | 0xffffffff |
 | font_family | Set the global default font to render the text including debug fps/notification, config error messages and etc., selected from system fonts. | string | Sans |
 | splash_font_family | Changes the font used to render the splash text, selected from system fonts (requires a monitor reload to take effect). | string | [\[Empty]] |
