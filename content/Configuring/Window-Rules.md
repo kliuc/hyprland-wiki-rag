@@ -83,11 +83,12 @@ The supported fields for parameters are:
 | pinned:\[0/1\] | Pinned windows. |
 | focus:\[0/1\] | Currently focused window. |
 | group:\[0/1\] | Grouped windows. |
+| modal:\[0/1\] | Modal windows (e.g. "Are you sure" popups) |
 | fullscreenstate:\[internal\] \[client\] | Windows with matching `fullscreenstate`. `internal` and `client` can be `*` - any, `0` - none, `1` - maximize, `2` - fullscreen, `3` - maximize and fullscreen. |
 | workspace:\[w\] | Windows on matching workspace. `w` can be `id` or `name:string`. |
 | onworkspace:\[w\] | Windows on matching workspace. `w` can be `id`, `name:string` or `workspace selector`. |
 | content:\[none\|photo\|video\|game\] | Windows with specified content type |
-| xdgtag:\[string\] | Match a window by its xdgTag (see `hyprctl clients` to check if it has one) |
+| xdgtag:\[string\] | Match a window by its xdgTag (see `hyprctl clients` to check if it has one) | 
 
 Keep in mind that you _have_ to declare at least one field, but not all.
 
@@ -161,8 +162,8 @@ Dynamic rules are re-evaluated every time a property changes.
 | idleinhibit \[mode\] | Sets an idle inhibit rule for the window. If active, apps like `hypridle` will not fire. Modes: `none`, `always`, `focus`, `fullscreen`. |
 | opacity \[a\] | Additional opacity multiplier. Options for a: `float` -> sets an overall opacity, `float float` -> sets activeopacity and inactiveopacity respectively, `float float float` -> sets activeopacity, inactiveopacity and fullscreenopacity respectively. |
 | tag \[name\] | Applies the tag `name` to the window, use prefix `+`/`-` to set/unset flag, or no prefix to toggle the flag. |
-| maxsize \[w\] \[h\] | Sets the maximum size (x,y -> int). |
-| minsize \[w\] \[h\] | Sets the minimum size (x,y -> int).|
+| maxsize \[w\] \[h\] | Sets the maximum size (x,y -> int). Applies to floating windows. (use `misc:size_limits_tiled` to include tiled windows.) |
+| minsize \[w\] \[h\] | Sets the minimum size (x,y -> int). Applies to floating windows. (use `misc:size_limits_tiled` to include tiled windows.) |
 
 The following rules can also be set with [`setprop`](../Dispatchers#setprop):
 
