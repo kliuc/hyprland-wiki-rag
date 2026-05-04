@@ -100,15 +100,15 @@ A monitor. Can be:
 | `kill(window?)` | Kill a window |
 | `signal({ signal, window? })` | send a signal to a window process |
 | `float({ action?, window? })` | set a window's floating state. |
-| `fullscreen({ mode?, action?, window? })` | set a window's fullscreen state. `mode` can be "maximized" and "fullscreen" |
-| `fullscreen_state({ internal, client, action?, window? })` | set a window's fullscreen state with more precision |
+| `fullscreen({ mode?, action?, window? })` | set a window's fullscreen state. `mode` can be "maximized" and "fullscreen". `action` can be `toggle`/`set`/`unset` |
+| `fullscreen_state({ internal, client, action?, window? })` | set a window's fullscreen state with more precision. `action` can be `toggle`/`set`/`unset` |
 | `pseudo({ action?, window? })` | set a window's pseudotiling state. |
 | `move({ direction })` | move a window in a direction |
 | `move({ workspace, follow? })` | move a window to a workspace |
 | `move({ monitor, follow? })` | move a window to a monitor |
 | `move({ x, y, relative? })` | move a window by / to a coord |
-| `move({ into_group, direction })` | move a window into a group in a direction |
-| `move({ into_or_create_group, direction })` | move a window into a group in a direction, or create a group |
+| `move({ into_group = direction })` | move a window into a group in a direction |
+| `move({ into_or_create_group = direction })` | move a window into a group in a direction, or create a group if no group exists in that direction |
 | `move({ out_of_group })` | move a window out of a group. `true` for directionless, direction for a direction |
 | `swap({ direction })` | swap the current window with another one in a given direction | 
 | `swap({ target })` | swap the current window with another one | 
@@ -164,7 +164,7 @@ A monitor. Can be:
 > [!WARNING]
 > [uwsm](../../../Useful-Utilities/Systemd-start) users should avoid using `exit` dispatcher, or terminating Hyprland process directly, as exiting Hyprland this way removes it from under its clients and interferes with ordered shutdown sequence. Use `exec, uwsm stop` (or [other variants](https://github.com/Vladimir-csp/uwsm#how-to-stop)) which will gracefully bring down graphical session (and login session bound to it, if any). If you experience problems with units entering inconsistent states, affecting subsequent sessions, use `exec, loginctl terminate-user ""` instead (terminates all units of the user).
 > 
-> It's also strongly advised to replace the `exit` dispatcher inside `hyprland.conf` keybinds section accordingly.
+> It's also strongly advised to replace the `exit` dispatcher inside `hyprland.lua` keybinds section accordingly.
 
 > [!WARNING]
 > It is NOT recommended to set DPMS or forceidle with a keybind directly, as it
