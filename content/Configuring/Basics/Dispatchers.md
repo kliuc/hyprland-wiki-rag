@@ -71,7 +71,7 @@ A monitor. Can be:
 | method | description |
 | --- | --- |
 | `exec_cmd(cmd, rules?)` | execute a command. Rules can be a table of window rule effects to apply (see [below](#executing-with-rules)). |
-| `exec_raw(cmd)` | execute a raw command. While `exec_cmd` will do `bash -c`, this won't. |
+| `exec_raw(cmd)` | execute a raw command. While `exec_cmd` will do `sh -c`, this won't. |
 | `focus({ direction })` | move the focus in a direction |
 | `focus({ monitor })` | move the focus to a monitor |
 | `focus({ workspace, on_current_monitor? })` | move the focus to a workspace |
@@ -284,8 +284,8 @@ The `fullscreen_state` dispatcher decouples the state that Hyprland maintains fo
 
 For example:
 
-`2 0` Fullscreens the application and keeps the client in non-fullscreen mode.  
+`{internal = 2, client = 0}` Fullscreens the application and keeps the client in non-fullscreen mode.  
 
 This can be used to prevent Chromium-based browsers from going into presentation mode when they detect they have been fullscreened.  
 
-`0 2` Keeps the window non-fullscreen, but the client goes into fullscreen mode within the window.
+`{internal = 0, client = 2}` Keeps the window non-fullscreen, but the client goes into fullscreen mode within the window.
