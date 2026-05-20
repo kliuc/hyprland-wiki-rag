@@ -96,20 +96,20 @@ A monitor. Can be:
 
 | method | description |
 | --- | --- |
-| `close(window?)` | Close a window. |
-| `kill(window?)` | Kill a window |
-| `signal({ signal, window? })` | send a signal to a window process |
+| `close(window?)` | Send a graceful request to close the window. |
+| `kill(window?)` | Kill the process owning the window with a `SIGKILL`. |
+| `signal({ signal, window? })` | Send a POSIX signal to the process owning the window. |
 | `float({ action?, window? })` | set a window's floating state. |
 | `fullscreen({ mode?, action?, window? })` | set a window's fullscreen state. `mode` can be "maximized" and "fullscreen". `action` can be `toggle`/`set`/`unset` |
 | `fullscreen_state({ internal, client, action?, window? })` | set a window's fullscreen state with more precision. `action` can be `toggle`/`set`/`unset`. See [Fullscreenstate](#fullscreenstate) |
 | `pseudo({ action?, window? })` | set a window's pseudotiling state. |
-| `move({ direction, group_aware? })` | move a window in a direction. `group_aware = true` will put windows in/out of groups alongside the given direction. |
-| `move({ workspace, follow? })` | move a window to a workspace |
-| `move({ monitor, follow? })` | move a window to a monitor |
-| `move({ x, y, relative? })` | move a window by / to a coord |
-| `move({ into_group = direction })` | move a window into a group in a direction |
-| `move({ into_or_create_group = direction })` | move a window into a group in a direction, or create a group if no group exists in that direction |
-| `move({ out_of_group })` | move a window out of a group. `true` for directionless, direction for a direction |
+| `move({ direction, group_aware?, window? })` | move a window in a direction. `group_aware = true` will put windows in/out of groups alongside the given direction. |
+| `move({ workspace, follow?, window? })` | move a window to a workspace |
+| `move({ monitor, follow?, window? })` | move a window to a monitor |
+| `move({ x, y, relative?, window? })` | move a window by / to a coord |
+| `move({ into_group = direction, window? })` | move a window into a group in a direction |
+| `move({ into_or_create_group = direction, window? })` | move a window into a group in a direction, or create a group if no group exists in that direction |
+| `move({ out_of_group, window? })` | move a window out of a group. `true` for directionless, direction for a direction |
 | `swap({ direction })` | swap the current window with another one in a given direction | 
 | `swap({ target })` | swap the current window with another one | 
 | `swap({ next })` | swap the current window with the next one | 
